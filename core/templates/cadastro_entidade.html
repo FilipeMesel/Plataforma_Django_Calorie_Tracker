@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Cadastro de Alimentos</title>
+</head>
+<body>
+    <ul class="sidebar-nav">
+      {% if user.is_authenticated %}
+        <li>Olá, {{ user.get_username }}</li>
+        <li><a href="{% url 'cadastrar_entidade' user.id %}">Cadastro de Alimentos</a></li>
+        <li><a href="{% url 'lista_alimentos' user.id %}">Lista de Alimentos</a></li>
+        <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+      {% else %}
+        <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+      {% endif %}
+    </ul>
+    <div class="login-form-body">
+        {% if user.is_authenticated %}
+            <h1 class="login-form-h1">Cadastrar Alimentos</h1>
+            <form class="login-form-form" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="login-form-button" type="submit">Salvar</button>
+            </form>
+            <a href="{% url 'home' %}">Voltar para a home</a>
+        {% else %}
+            <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+        {% endif %}
+    </div>
+</body>
+</html>
